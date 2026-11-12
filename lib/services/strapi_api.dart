@@ -1,13 +1,18 @@
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/pick.dart';
 
 class StrapiApi {
-  static const String _baseUrl = 'http://localhost:1337';
+  static const String _baseUrl = String.fromEnvironment(
+    'CMS_URL',
+    defaultValue: 'http://localhost:1337',
+  );
 
   Future<List<Pick>> getPicks() async {
-    final uri = Uri.parse('$_baseUrl/api/picks');
+    final baseUrl = _baseUrl.replaceFirst(RegExp(r'/$'), '');
+    final uri = Uri.parse('$baseUrl/api/picks');
 
     final response = await http.get(uri);
 
